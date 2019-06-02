@@ -1,3 +1,5 @@
+# Longe de estar completo
+
 def employees(funcionarios):
     salario_minimo = 998
     gasto_com_funcionario = funcionarios*salario_minimo
