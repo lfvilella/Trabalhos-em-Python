@@ -21,26 +21,36 @@ class CidadeConsumo:
 
         media = consumo_de_agua / quantidade_de_pessoas
         self.media_por_pessoa[int(media)] += quantidade_de_pessoas
-        
 
-cidade = 1 # Para printar no Cidade#
-quantidade_imoveis = int(input())
-while True:
-    if quantidade_imoveis == 0:
-        break
+def ler_dados():
+    cidades = []
+    while True:
+        quantidade_imoveis = int(input())
+        if quantidade_imoveis == 0:
+            break
 
-    else:
         c = CidadeConsumo()
-        for i in range(quantidade_imoveis):
+        for _ in range(quantidade_imoveis):
             moradores, consumo = list(map(int, input().split()))
             c.adicionar_casa(moradores, consumo)
-        
 
-        print("Cidade# %d:" % cidade)
-        print(sorted(c.media_por_pessoa.items(), key=lambda i: i[1]))
-        print("Consumo medio: %.2f m3." % c.consumo_medio)
-        cidade += 1
+        cidades.append(c)
+    
+    return cidades
 
-        quantidade_imoveis = int(input())
-        if quantidade_imoveis != 0:
-            print()
+def exibir_dados(cidades):
+
+    index = 1
+    for cidade in cidades:
+        print(f'Cidade#: {index}')
+        string = ''
+        for media_consumo, quantidade_pessoas in sorted(cidade.media_por_pessoa.items(), key=lambda i: i[0]):
+            string += f'{quantidade_pessoas}-{media_consumo} '
+        print(string)
+        print('Consumo medio: %.2f m3.' % cidade.consumo_medio)
+        print()
+        index += 1
+
+if __name__ == '__main__':
+    cidades = ler_dados()
+    exibir_dados(cidades)
