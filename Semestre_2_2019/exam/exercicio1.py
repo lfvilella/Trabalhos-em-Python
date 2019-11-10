@@ -1,9 +1,14 @@
-# def cadastro()
+def cadastro(codigo, produto, quantidade, preco):
+    f = open('txt/mercado1.txt', 'a')
+    total = quantidade*preco
+
+    f.write('%d|'%codigo + '%s|'%produto + '%.2f'%total)
+
+    f.close()
 
 def ler_dados():
     quantidade_lista_compras = int(input("Quantidade na lista: "))
-    # f = open('txt/mercado1.txt', 'a')
-
+    
     for x in range(quantidade_lista_compras):
         tipo_mercado = int(input("Tipo do mercado: "))
         codigo = int(input("Codigo: "))
@@ -12,8 +17,6 @@ def ler_dados():
         quantidade_de_produto = int(input("Quantidade: "))
         preco_total = preco*quantidade_de_produto
 
-        # f.write(codigo + '|' + produto + '|' + preco_total)
-        # cadastro(tipo_mercado, codigo, produto, preco_total)
-    # f.close()
+        cadastro(codigo, produto, quantidade_de_produto, preco)
 
 init_progam = ler_dados()
