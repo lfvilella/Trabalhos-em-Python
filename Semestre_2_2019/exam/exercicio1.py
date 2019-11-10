@@ -11,18 +11,31 @@ def cadastro(codigo, produto, quantidade, preco, tipo_do_mercado):
 
         writer.writerow({'product': produto, 'total_cost': total})
 
+def pesquisa_valor(codigo_arquivo, produto):
+    file_name = 'txt/mercado{}.txt'.format(codigo_arquivo)
+
+    with open(file_name) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            print(row['produto'])
+
+def ler_input(msg=None):
+     return input(msg).lower().strip()
+
 def ler_dados():
     quantidade_lista_compras = int(input("Quantidade na lista: "))
     
     for x in range(quantidade_lista_compras):
-        tipo_mercado = int(input("Tipo do mercado: "))
-        codigo = int(input("Codigo: "))
-        produto = str(input("Produto: ")).lower()
-        preco = float(input("Preço: "))
-        quantidade_de_produto = int(input("Quantidade: "))
+        tipo_mercado = int(ler_input("Tipo do Mercado: "))
+        codigo = int(ler_input("Codigo: "))
+        produto = str(ler_input("Produto: "))
+        preco = float(ler_input("Preço: "))
+        quantidade_de_produto = int(ler_input("Quantidade: "))
         preco_total = preco*quantidade_de_produto
 
         cadastro(codigo, produto, quantidade_de_produto, preco, tipo_mercado)
+    
+    pesquisa_valor(1, 'banana')
 
 # def mercado_mais_barato():
 
