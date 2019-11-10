@@ -1,0 +1,6 @@
+banana,6.0
+banana,4.0
+banana,4.0
+banana,4.0
+banana,4.0
+banana,4.0

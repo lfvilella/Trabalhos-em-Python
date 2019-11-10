@@ -1,2 +1,2 @@
-123|banana|6.00
-321|maca|3.00
+banana,4.0
+maca,6.0
