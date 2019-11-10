@@ -1,9 +1,7 @@
 def cadastro(codigo, produto, quantidade, preco):
     f = open('txt/mercado1.txt', 'a')
     total = quantidade*preco
-
-    f.write('%d|'%codigo + '%s|'%produto + '%.2f'%total)
-
+    f.write('%d|'%codigo + '%s|'%produto + '%.2f\n'%total)
     f.close()
 
 def ler_dados():
