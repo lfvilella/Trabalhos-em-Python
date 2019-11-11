@@ -27,20 +27,35 @@ def pesquisa_valor(codigo_arquivo, produto):
 
 def mercado_mais_barato(produto):
     lista = []
-    for idx in range(1,4):
-        valor = pesquisa_valor(idx, produto)
+    for codigo_mercado in range(1,4):
+        valor = pesquisa_valor(codigo_mercado, produto)
         if valor:
-            lista.append((valor,idx))
+            lista.append({'valor': valor, 'mercado':codigo_mercado}) # codigo_mercado = Se é o mercado 1,2 ou 3.
 
-    lista.sort()
+    lista.sort(key=lambda obj: obj['valor'])
 
     if not lista:
         return 
     
     return lista[0]
 
+def produtos_mercados_ordenados():
+    produtos = []
+    for mercado in range(1, 4):
+        file_name = 'txt/mercado{}.txt'.format(mercado)
+        
+        with open(file_name) as csvfile:
+            fieldnames = ['product', 'total_cost']
+            reader = csv.DictReader(csvfile, fieldnames=fieldnames)
+
+            for row in reader:
+                if not mercado_mais_barato(row['product']) in produtos:
+                    produtos.append(mercado_mais_barato(row['product']))
+
+    return produtos
+
 def ler_input(msg=None):
-     return input(msg).lower().strip()
+    return input(msg).lower().strip()
 
 def ler_dados():
     quantidade_lista_compras = int(input("Quantidade na lista: "))
@@ -51,9 +66,9 @@ def ler_dados():
         produto = str(ler_input("Produto: "))
         preco = float(ler_input("Preço: "))
         quantidade_de_produto = int(ler_input("Quantidade: "))
-        preco_total = preco*quantidade_de_produto
 
         cadastro(codigo, produto, quantidade_de_produto, preco, tipo_mercado)
     
 # init_progam = ler_dados()
-print(mercado_mais_barato('carvao'))
+# print(mercado_mais_barato('laranja'))
+print(produtos_mercados_ordenados())

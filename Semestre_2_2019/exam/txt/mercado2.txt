@@ -1,1 +1,2 @@
 laranja,200.00
+banana,2.0
