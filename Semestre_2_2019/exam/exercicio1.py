@@ -2,90 +2,16 @@ import csv
 
 def cadastro(codigo, produto, quantidade, preco, tipo_do_mercado):
     total = quantidade*preco
+    valor_unitario = preco/quantidade
 
     file_name = 'txt/mercado{}.txt'.format(tipo_do_mercado)
 
-    with open(file_name, 'a', newline='') as csvfile:
+    # 'w', pois o programa roda a cada lista nova
+    with open(file_name, 'w', newline='') as csvfile:
         fieldnames = ['product', 'total_cost']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
         writer.writerow({'product': produto, 'total_cost': total})
-
-def pesquisa_valor(codigo_arquivo, produto):
-    file_name = 'txt/mercado{}.txt'.format(codigo_arquivo)
-    
-    # soma_valor = 0 -> Caso haja uma repetição nos produtos, mas na lógica não deveria haver.
-    with open(file_name) as csvfile:
-        fieldnames = ['product', 'total_cost']
-        reader = csv.DictReader(csvfile, fieldnames=fieldnames)
-
-        for row in reader:
-            if row['product'] == produto:
-                return float(row['total_cost'])
-
-    # return soma_valor
-
-def mercado_mais_barato(produto):
-    lista = []
-    for codigo_mercado in range(1,4):
-        valor = pesquisa_valor(codigo_mercado, produto)
-        if valor:
-            lista.append({'valor': valor, 'mercado':codigo_mercado}) # codigo_mercado = Se é o mercado 1,2 ou 3.
-
-    lista.sort(key=lambda obj: obj['valor'])
-
-    if not lista:
-        return 
-    
-    return lista[0]
-
-def produtos_mercados_ordenados():
-    produtos = []
-    for mercado in range(1,4):
-        file_name = 'txt/mercado{}.txt'.format(mercado)
-        
-        with open(file_name) as csvfile:
-            fieldnames = ['product', 'total_cost']
-            reader = csv.DictReader(csvfile, fieldnames=fieldnames)
-
-            for row in reader:
-                if not mercado_mais_barato(row['product']) in produtos:
-                    produtos.append(mercado_mais_barato(row['product']))
-
-    produtos.sort(key=lambda obj: obj['valor'])
-    return produtos
-
-def retorna_produto_e_preco(produto):
-    lista = []
-    valor_inexistente = 0
-    for codigo_mercado in range(1,4):
-        valor = pesquisa_valor(codigo_mercado, produto)
-        if valor:
-            lista.append({'valor': valor, 'mercado':codigo_mercado})
-        else: 
-            valor_inexistente += 1
-
-    lista.sort(key=lambda obj: obj['valor'])
-
-    if not lista:
-        return
-
-    if valor_inexistente > 0:
-        return
-
-    return lista
-
-def calcula_diferenca(produto):
-    lista = retorna_produto_e_preco(produto)
-    diferenca = []
-    valor_mais_barato = lista[0]
-    for dicionario in lista:
-        calculo_da_diferenca = dicionario['valor'] - valor_mais_barato['valor']
-        mercado = dicionario['mercado']
-        diferenca.append({'diferença': calculo_da_diferenca, 'mercado': mercado})
-
-    del(diferenca[0]) # Tira a comparação do proprio mercado
-    return diferenca
 
 def compara_precos():
     produto_valor = {}
@@ -140,11 +66,7 @@ def ler_dados():
 
 if __name__ == '__main__':
     init_progam = ler_dados()
-    # print(mercado_mais_barato('laranja'))
-    # print(produtos_mercados_ordenados())
-    # variavel_mercado_barato = total_compra_cheaper_supermarket()[1]
-    # variavel_valor_mercado_barato = total_compra_cheaper_supermarket()[0]
-    # print("O mercado", variavel_mercado_barato, "é o mais barato, seu total é =", variavel_valor_mercado_barato)
-    # print(calcula_diferenca('laranja'))
-    # print(retorna_produto_e_preco('laranja'))
-    print(compara_precos())
+
+    precos_mercados = compara_precos()
+    for mercado, precos in precos_mercados.items():
+        print("Mercado", mercado, "total =", precos)
