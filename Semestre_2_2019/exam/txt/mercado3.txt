@@ -1,0 +1,2 @@
+laranja,300.00
+banana,4.0
