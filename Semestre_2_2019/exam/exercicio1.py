@@ -5,7 +5,7 @@ def limpar_file_before_start():
         file_name = 'txt/mercado{}.txt'.format(arquivo)
         open(file_name,'w').close()
 
-def cadastro(codigo, produto, quantidade, preco, tipo_do_mercado):
+def cadastro(produto, quantidade, preco, tipo_do_mercado):
     total = preco*quantidade
 
     file_name = 'txt/mercado{}.txt'.format(tipo_do_mercado)
@@ -63,7 +63,7 @@ def ler_dados():
         preco = float(ler_input("Preço: "))
         quantidade_de_produto = int(ler_input("Quantidade: "))
 
-        cadastro(codigo, produto, quantidade_de_produto, preco, tipo_mercado)
+        cadastro(produto, quantidade_de_produto, preco, tipo_mercado)
 
 if __name__ == '__main__':
     limpar_file_before_start()
