@@ -27,12 +27,17 @@ def pesquisa_valor(codigo_arquivo, produto):
 
 def mercado_mais_barato(produto):
     lista = []
-    for idx in range(3):
-        lista.append(pesquisa_valor(idx+1, produto))
+    for idx in range(1,4):
+        valor = pesquisa_valor(idx, produto)
+        if valor:
+            lista.append((valor,idx))
 
-    lista.remove(None)
     lista.sort()
-    # print(lista)
+
+    if not lista:
+        return False
+    
+    return lista[0]
 
 def ler_input(msg=None):
      return input(msg).lower().strip()
@@ -51,4 +56,4 @@ def ler_dados():
         cadastro(codigo, produto, quantidade_de_produto, preco, tipo_mercado)
     
 # init_progam = ler_dados()
-mercado_mais_barato('laranja')
+print(mercado_mais_barato('carvao'))
