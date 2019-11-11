@@ -35,7 +35,7 @@ def mercado_mais_barato(produto):
     lista.sort()
 
     if not lista:
-        return False
+        return 
     
     return lista[0]
 
