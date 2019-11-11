@@ -1,13 +1,16 @@
 import csv
 
+def limpar_file_before_start():
+    for arquivo in range(1,4):
+        file_name = 'txt/mercado{}.txt'.format(arquivo)
+        open(file_name,'w').close()
+
 def cadastro(codigo, produto, quantidade, preco, tipo_do_mercado):
-    total = quantidade*preco
-    valor_unitario = preco/quantidade
+    total = preco*quantidade
 
     file_name = 'txt/mercado{}.txt'.format(tipo_do_mercado)
 
-    # 'w', pois o programa roda a cada lista nova
-    with open(file_name, 'w', newline='') as csvfile:
+    with open(file_name, 'a', newline='') as csvfile:
         fieldnames = ['product', 'total_cost']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -51,7 +54,6 @@ def ler_input(msg=None):
     return input(msg).lower().strip()
 
 def ler_dados():
-    lista_produtos = []
     quantidade_lista_compras = int(input("Quantidade na lista: "))
     
     for x in range(quantidade_lista_compras):
@@ -60,11 +62,11 @@ def ler_dados():
         produto = str(ler_input("Produto: "))
         preco = float(ler_input("Preço: "))
         quantidade_de_produto = int(ler_input("Quantidade: "))
-        lista_produtos.append(produto)
 
         cadastro(codigo, produto, quantidade_de_produto, preco, tipo_mercado)
 
 if __name__ == '__main__':
+    limpar_file_before_start()
     init_progam = ler_dados()
 
     precos_mercados = compara_precos()
