@@ -23,5 +23,6 @@ def entry_page():
     return render_template('entry.html',
                             the_title='Welcome to Search For Letters on the Web!')
 
-
-app.run(debug=True)
+# This run like a security to development:
+if __name__ == '__main__':
+    app.run(debug=True)
