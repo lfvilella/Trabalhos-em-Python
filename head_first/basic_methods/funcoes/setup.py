@@ -7,5 +7,5 @@ setup(
     author='Luís Felipe Fabro Vilella',
     author_email='vilella.luisfelipe@gmail.com',
     url='github.com/lfvilella',
-    py_modules=['vsearch_lfvilella'],
+    py_modules=['vsearch'],
 )
