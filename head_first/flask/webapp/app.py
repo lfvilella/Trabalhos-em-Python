@@ -1,5 +1,5 @@
 import datetime
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, escape
 
 app = Flask(__name__)
 
@@ -33,7 +33,7 @@ def log_request(req:'flask_request', res:str) -> None:
 def view_the_log():
     with open('basic_db/vsearch.log') as log:
         contents = log.read() # .read() return all file
-    return contents
+    return escape(contents)
         
         
 
