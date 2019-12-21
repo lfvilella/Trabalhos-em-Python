@@ -32,9 +32,18 @@ def log_request(req:'flask_request', res:str) -> None:
 
 @app.route('/viewlog')
 def view_the_log():
+    contents = []
     with open('basic_db/vsearch.log') as log:
-        contents = log.read() # .read() return all file
-    return escape(contents)
+        for line in log:
+            contents.append([])
+            for item in line.split('|'):
+                contents[-1].append(escape(item))
+    
+    titles = ('Date', 'Form Data', 'Remote_addr', 'User_agent', 'Results')
+    return render_template('viewlog.html',
+                            the_title='View Log',
+                            the_row_titles=titles,
+                            the_data=contents)
         
         
 
