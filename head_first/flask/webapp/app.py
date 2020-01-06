@@ -1,6 +1,7 @@
 import datetime
 import vsearch_lfvilella
 from flask import Flask, render_template, request, escape
+import mysql.connector
 
 app = Flask(__name__)
 
@@ -23,12 +24,28 @@ def entry_page():
                             the_title='Welcome to Search For Letters on the Web!')
 
 def log_request(req:'flask_request', res:str) -> None:
-    with open('basic_db/vsearch.log', 'a') as log:
-        print(datetime.datetime.utcnow().isoformat(),
-            req.form,
-            req.remote_addr,
-            req.user_agent,
-            res, file=log, sep=' | ')
+    dbconfig = {'host':'127.0.0.1',
+                'user': 'vsearch',
+                'password': 'vsearchpasswd',
+                'database': 'vsearchlogDB',}
+
+    conn = mysql.connector.connect(**dbconfig)
+    cursor = conn.cursor()
+
+    _SQL = """insert into log
+              (phrase, letters, ip, browser_string, results)
+              values
+              (%s, %s, %s, %s, %s)"""
+
+    cursor.execute(_SQL, (req.form['phrase'],
+                          req.form['letters'],
+                          req.remote_addr,
+                          req.user_agent.browser,
+                          res, ))
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
 
 @app.route('/viewlog')
 def view_the_log():
