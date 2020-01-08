@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h2>{{ the_title }}</h2>
+
+
+
+<table>
+    <tr>
+        {% for row in dados %}
+            <th>{{ row.title }}</th>
+        {% endfor %}
+    </tr>
+        <tr>
+            {% for row in dados %}
+                <td>{{ row.value }}</td>
+            {% endfor %}
+        </tr>
+</table>
+
+{% endblock %}

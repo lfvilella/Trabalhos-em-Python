@@ -48,13 +48,41 @@ def view_the_log():
         cursor.execute(_SQL)
         contents = cursor.fetchall()
     
-    titles = ('Date', 'Phrase', 'Letters', 'Remote_addr', 'User_agent', 'Results')
+    titles = ('Date', 'Phrase', 'Letters', 'Remote_addr', 'User_agent', 'Results',)
     return render_template('viewlog.html',
                             the_title='View Log',
                             the_row_titles=titles,
                             the_data=contents)
-        
-        
+
+@app.route('/viewreports')
+def view_the_reports():
+    count_request = """select count(*) from log"""
+    count_letters = """select count(letters) as 'count', letters 
+                        from log 
+                        group by letters 
+                        order by count desc 
+                        limit 1"""
+    count_ip = """select distinct ip from log"""
+    count_browser = """select browser_string, count(browser_string) as 'count' 
+                        from log 
+                        group by browser_string 
+                        order by count desc 
+                        limit 1"""
+
+    dados = [
+        {'title': 'Requests', 'value': run_sql(count_request)},
+        {'title': 'Letters', 'value': run_sql(count_letters)},
+        {'title': 'Ip', 'value': run_sql(count_ip)},
+        {'title': 'Browser', 'value': run_sql(count_browser)},
+    ]
+
+    return render_template('viewreports.html', dados=dados)
+
+def run_sql(command:str):
+    with UseDatabase(app.config['dbconfig']) as cursor:
+        cursor.execute(command)
+        return cursor.fetchone()
+
 
 # This run like a security to development:
 if __name__ == '__main__':
