@@ -1,7 +1,8 @@
 import datetime
 import vsearch_lfvilella
-from flask import Flask, render_template, request, escape
+from flask import Flask, render_template, request, escape, session
 from DBcm import UseDatabase
+from checker import check_logged_in
 
 app = Flask(__name__)
 
@@ -9,6 +10,8 @@ app.config['dbconfig'] = {'host':'127.0.0.1',
                           'user': 'vsearch',
                           'password': 'vsearchpasswd',
                           'database': 'vsearchlogDB',}
+
+app.secret_key = 'ThatKeyShouldBeHard'
 
 @app.route('/search4', methods=['POST'])
 def do_search():
@@ -42,6 +45,7 @@ def log_request(req:'flask_request', res:str):
                             res, ))
 
 @app.route('/viewlog')
+@check_logged_in
 def view_the_log():
     with UseDatabase(app.config['dbconfig']) as cursor:
         _SQL = """select ts, phrase, letters, ip, browser_string, results from log"""
@@ -55,6 +59,7 @@ def view_the_log():
                             the_data=contents)
 
 @app.route('/viewreports')
+@check_logged_in
 def view_the_reports():
     count_request = """select count(*) from log"""
     count_letters = """select count(letters) as 'count', letters 
@@ -83,6 +88,15 @@ def run_sql(command:str):
         cursor.execute(command)
         return cursor.fetchone()
 
+@app.route('/login')
+def do_login():
+    session['logged_in'] = True
+    return 'You are now logged in'
+
+@app.route('/logout')
+def do_logout():
+    session.pop('logged_in')
+    return 'You are now logged out'
 
 # This run like a security to development:
 if __name__ == '__main__':
