@@ -1,7 +1,7 @@
 import datetime
 import vsearch_lfvilella
 from flask import Flask, render_template, request, escape, session
-from DBcm import UseDatabase
+from DBcm import UseDatabase, ConnectionError, CredentialsError, SQLError
 from checker import check_logged_in
 
 app = Flask(__name__)
@@ -18,7 +18,11 @@ def do_search():
     phrase = (request.form['phrase']).lower()
     letters = request.form['letters']
     result = str(vsearch_lfvilella.search_letters(phrase, letters))
-    log_request(request, result)
+    try:
+        log_request(request, result)
+    except Exception as error:
+        print('Loggin failed with this error:', str(error))
+
     return render_template('results.html',
                             the_title='Here are your results:',
                             the_phrase=phrase,
@@ -47,17 +51,27 @@ def log_request(req:'flask_request', res:str):
 @app.route('/viewlog')
 @check_logged_in
 def view_the_log():
-    with UseDatabase(app.config['dbconfig']) as cursor:
-        _SQL = """select ts, phrase, letters, ip, browser_string, results from log"""
-        cursor.execute(_SQL)
-        contents = cursor.fetchall()
-    
-    titles = ('Date', 'Phrase', 'Letters', 'Remote_addr', 'User_agent', 'Results',)
-    return render_template('viewlog.html',
-                            the_title='View Log',
-                            the_row_titles=titles,
-                            the_data=contents)
-
+    try:
+        with UseDatabase(app.config['dbconfig']) as cursor:
+            _SQL = """select ts, phrase, letters, ip, browser_string, results from log"""
+            cursor.execute(_SQL)
+            contents = cursor.fetchall()
+        
+        titles = ('Date', 'Phrase', 'Letters', 'Remote_addr', 'User_agent', 'Results',)
+        return render_template('viewlog.html',
+                                the_title='View Log',
+                                the_row_titles=titles,
+                                the_data=contents)
+    except ConnectionError as err:
+        print('Is your database on? Error:', str(err))
+    except CredentialsError as err:
+        print('Is your credentials right? Error:', str(err))
+    except SQLError as err:
+        print('Is your query correct? Error:', str(err))
+    except Exception as err:
+        print('Something went wrong:', str(err))
+    return 'Error'
+        
 @app.route('/viewreports')
 @check_logged_in
 def view_the_reports():
