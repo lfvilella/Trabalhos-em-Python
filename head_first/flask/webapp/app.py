@@ -1,8 +1,9 @@
 import datetime
 import vsearch_lfvilella
-from flask import Flask, render_template, request, escape, session
+from flask import Flask, render_template, request, escape, session, copy_current_request_context
 from DBcm import UseDatabase, ConnectionError, CredentialsError, SQLError
 from checker import check_logged_in
+from threading import Thread
 
 app = Flask(__name__)
 
@@ -15,11 +16,38 @@ app.secret_key = 'ThatKeyShouldBeHard'
 
 @app.route('/search4', methods=['POST'])
 def do_search():
+
+    @copy_current_request_context
+    def log_request(req:'flask_request', res:str):
+        try:
+            with UseDatabase(app.config['dbconfig']) as cursor:
+                _SQL = """insert into log
+                        (phrase, letters, ip, browser_string, results)
+                        values
+                        (%s, %s, %s, %s, %s)"""
+
+                cursor.execute(_SQL, (req.form['phrase'],
+                                    req.form['letters'],
+                                    req.remote_addr,
+                                    req.user_agent.browser,
+                                    res, ))
+        except ConnectionError as err:
+            print('Is your database on? Error:', str(err))
+        except CredentialsError as err:
+            print('Is your credentials right? Error:', str(err))
+        except SQLError as err:
+            print('Is your query correct? Error:', str(err))
+        except Exception as err:
+            print('Something went wrong:', str(err))
+        return 'Error'
+
     phrase = (request.form['phrase']).lower()
     letters = request.form['letters']
     result = str(vsearch_lfvilella.search_letters(phrase, letters))
     try:
-        log_request(request, result)
+        t = Thread(target=log_request, args=(request, result))
+        t.start()
+
     except Exception as error:
         print('Loggin failed with this error:', str(error))
 
@@ -34,19 +62,6 @@ def do_search():
 def entry_page():
     return render_template('entry.html',
                             the_title='Welcome to Search For Letters on the Web!')
-
-def log_request(req:'flask_request', res:str):
-    with UseDatabase(app.config['dbconfig']) as cursor:
-        _SQL = """insert into log
-                (phrase, letters, ip, browser_string, results)
-                values
-                (%s, %s, %s, %s, %s)"""
-
-        cursor.execute(_SQL, (req.form['phrase'],
-                            req.form['letters'],
-                            req.remote_addr,
-                            req.user_agent.browser,
-                            res, ))
 
 @app.route('/viewlog')
 @check_logged_in
