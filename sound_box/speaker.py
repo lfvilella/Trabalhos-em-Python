@@ -13,13 +13,13 @@ def main():
 
     elif request.method == 'POST':
         search = request.form.get('textview')
-        url = get_iframe(search)
+        url = get_url(search)
         iframe = url.replace('watch?v=', 'embed/')
         print(iframe)
         return render_template('index.html', iframe=iframe)
 
 
-def get_iframe(text_search):
+def get_url(text_search):
     driver = webdriver.Chrome()
     driver.get('https://youtube.com')
 
