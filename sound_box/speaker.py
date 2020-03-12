@@ -15,7 +15,7 @@ def main():
         search = request.form.get('textview')
         url = get_url(search)
         iframe = url.replace('watch?v=', 'embed/')
-        print(iframe)
+
         return render_template('index.html', iframe=iframe)
 
 
