@@ -1,0 +1,106 @@
+body {
+    display: flex;
+    justify-content: center;
+    background-image: url("img/background.jpg");
+    background-color: black;
+}
+.container{
+    transform: translate(-1%, 10%);
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+li {
+    margin: auto 60px auto 60px;
+}
+
+li:first-child {
+    margin-left: 0px;
+}
+
+li:last-child {
+    margin-right: 0px;
+}
+
+.box, .display {
+    background-color: rgba(240, 240, 240, 0.9);
+    width: 200px;
+    height: 600px;
+
+    border: 2px solid black;
+    border-radius: 5px;
+    
+    box-shadow: 7px -3px 3px gray;
+}
+
+.display {
+    width: 600px;
+    height: 400px;
+    box-shadow: none;
+    border: 3px solid white;
+    background-color: rgba(112, 112, 112, 0.781);
+}
+
+.speaker {
+    position: relative;
+    background-color: gray;
+    border: 15px solid black;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    margin: 100px auto 0px auto;
+}
+
+.voice {
+    position: relative;
+    background-color: black;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin: auto;
+    top: 43px;
+}
+
+.air-exit {
+    position: relative;
+    background-color: rgb(206, 206, 206);
+    border: 2px solid black;
+    border-radius: 2px;
+    width: 150px;
+    height: 7px;
+
+    margin: 90px auto 0px auto;
+}
+
+.textview {
+    width: 450px;
+    margin: 12px 15px 10px 47px;
+    padding: 5px;
+    font-size: 40px;
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
+    color: black;
+    border: none;
+}
+
+.btn{
+    position: absolute;
+    border-radius: 10px;
+    width: 50px;
+    height: 50px;
+    font-size: 27px;
+    margin-top: 15px;
+    cursor: pointer;
+    background-color: #ff0000;
+    border: none;
+    color: white;
+}
+#iframe{
+    margin-left: 20px;
+    border-radius: 10px;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles.css">
+    <title>Sound Box</title>
+    <style>
+        .textview{
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <ul>
+            <li>
+                <div class="box">
+                    <div class="speaker">
+                        <div class="voice"></div>
+                    </div>
+                    <div class="speaker">
+                        <div class="voice"></div>
+                    </div>
+                    <div class="air-exit"></div>
+                </div>
+            </li>
+            <li>
+                <div class="display">
+                    <form method="POST">
+                        <input class="textview" name="textview">
+                        <input class="btn" type="submit" value="&#9654;">
+                    </form>
+                    <iframe id="iframe" width="560" height="315" src="{{iframe}}" frameborder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+            </li>
+            <li>
+                <div class="box">
+                    <div class="speaker">
+                        <div class="voice"></div>
+                    </div>
+                    <div class="speaker">
+                        <div class="voice"></div>
+                    </div>
+                    <div class="air-exit"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>
