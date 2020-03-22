@@ -13,9 +13,3 @@ with mic as source:
 
     except:
         print("Não entendi")
-        
-    # except sr.UnkownValueError:
-    #     print("Não entendi")
-
-    # except sr.RequestError as error:
-    #     print("ERROR!")
