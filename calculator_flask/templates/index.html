@@ -1,66 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/styles.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <title>Calculadora</title>
     <script>
-        function insert(number){
-            document.form.textview.value = document.form.textview.value+number;
+        function insert(number) {
+            document.form.textview.value = document.form.textview.value + number;
         }
 
-        function clean(){
+        function clean() {
             document.form.textview.value = '';
         }
 
-        function back(){
+        function back() {
             var exp = document.form.textview.value;
-            document.form.textview.value = exp.substring(0,exp.length-1)
+            document.form.textview.value = exp.substring(0, exp.length - 1)
         }
     </script>
     <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body {
+            background: linear-gradient(to right, #e91e63, #3f51b5);
+            height: 100%;
+        }
+
+        .btn {
+            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            font-size: 25px;
+            margin: 2px;
+            cursor: pointer;
+            background-color: #607d8b;
+            border: none;
+            color: white;
+        }
+
+        .textview {
+            width: 215px;
+            margin: 5px;
+            font-size: 40px;
+            border-radius: 10px;
+            border: none;
+            color: #607d8b;
+        }
+
+        .main {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+        .title {
+            text-align: center;
+            color: white;
+            margin-top: 5%;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 25pt;
+        }
+
+        #microphone-submit{
+            position: absolute;
+            top: 32.5%;
+            left: 58%;
+        }
+        .mic{
+            position: absolute;
+            color: white;
+            font-size: 26pt;
+            margin-top: 11.5px;
+            margin-left: 16.5px;
+        }
+        #microphone-submit form input{
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.068);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+        }
     </style>
 </head>
+
 <body>
     <h1 class="title">Simple Calculator</h1>
-    <div class="main">
+    <div id="microphone-submit">
+        <form method="POST">
+            <i class="mic fas fa-microphone"></i>
+            <input type="submit" value="">
+        </form>
+    </div>
+        <div class="main">
         <form name="form" method="POST">
-        <div>
-            <textarea class="textview" rows="1" placeholder="--------------">{{sum}}</textarea>
-        </div>
-        <input class="textview" name="textview">
-        <table>
-            <tr>
-                <td><input class="btn" type="button" value="C" onclick="clean()"></td>
-                <td><input class="btn" type="button" value="<" onclick="back()"></td>
-                <td><input class="btn" type="button" value="/" onclick="insert('/')"></td>
-                <td><input class="btn" type="button" value="x" onclick="insert('*')"></td>
-            </tr>
-            <tr>
-                <td><input class="btn" type="button" value="7" onclick="insert(7)"></td>
-                <td><input class="btn" type="button" value="8" onclick="insert(8)"></td>
-                <td><input class="btn" type="button" value="9" onclick="insert(9)"></td>
-                <td><input class="btn" type="button" value="-" onclick="insert('-')"></td>
-            </tr>
-            <tr>
-                <td><input class="btn" type="button" value="4" onclick="insert(4)"></td>
-                <td><input class="btn" type="button" value="5" onclick="insert(5)"></td>
-                <td><input class="btn" type="button" value="6" onclick="insert(6)"></td>
-                <td><input class="btn" type="button" value="+" onclick="insert('+')"></td>
-            </tr>
-            <tr>
-                <td><input class="btn" type="button" value="1" onclick="insert(1)"></td>
-                <td><input class="btn" type="button" value="2" onclick="insert(2)"></td>
-                <td><input class="btn" type="button" value="3" onclick="insert(3)"></td>
-                <td rowspan="5"><input class="btn" style="height: 106px;" type="submit" value="="></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input class="btn" style="width: 106px;" type="button" value="0" onclick="insert(0)"></td>
-                <td><input class="btn" type="button" value="." onclick="insert('.')"></td>
-            </tr>
-        </table>
+            <div>
+                <textarea class="textview" rows="1" placeholder="--------------">{{sum}}</textarea>
+            </div>
+            <input class="textview" name="textview" placeholder="{{frase}}">
+            <table>
+                <tr>
+                    <td><input class="btn" type="button" value="C" onclick="clean()"></td>
+                    <td><input class="btn" type="button" value="<" onclick="back()"></td>
+                    <td><input class="btn" type="button" value="/" onclick="insert('/')"></td>
+                    <td><input class="btn" type="button" value="x" onclick="insert('*')"></td>
+                </tr>
+                <tr>
+                    <td><input class="btn" type="button" value="7" onclick="insert(7)"></td>
+                    <td><input class="btn" type="button" value="8" onclick="insert(8)"></td>
+                    <td><input class="btn" type="button" value="9" onclick="insert(9)"></td>
+                    <td><input class="btn" type="button" value="-" onclick="insert('-')"></td>
+                </tr>
+                <tr>
+                    <td><input class="btn" type="button" value="4" onclick="insert(4)"></td>
+                    <td><input class="btn" type="button" value="5" onclick="insert(5)"></td>
+                    <td><input class="btn" type="button" value="6" onclick="insert(6)"></td>
+                    <td><input class="btn" type="button" value="+" onclick="insert('+')"></td>
+                </tr>
+                <tr>
+                    <td><input class="btn" type="button" value="1" onclick="insert(1)"></td>
+                    <td><input class="btn" type="button" value="2" onclick="insert(2)"></td>
+                    <td><input class="btn" type="button" value="3" onclick="insert(3)"></td>
+                    <td rowspan="5"><input class="btn" style="height: 106px;" type="submit" value="="></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input class="btn" style="width: 106px;" type="button" value="0"
+                            onclick="insert(0)"></td>
+                    <td><input class="btn" type="button" value="." onclick="insert('.')"></td>
+                </tr>
+            </table>
         </form>
     </div>
 </body>
+
 </html>
