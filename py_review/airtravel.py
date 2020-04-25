@@ -1,3 +1,6 @@
+from pprint import pprint as pp
+
+
 class Flight:
 
     def __init__(self, number, aircraft):
@@ -35,3 +38,9 @@ class Aircraft:
     def seating_plan(self):
         return (range(1, self.num_rows_seats + 1),
                 "ABCDEFGHJK"[:self.num_column_seats])
+
+
+if __name__ == "__main__":
+    f = Flight(111, Aircraft('vtnc', 5, 3))
+    f.book_seat('0C', 'luis')
+    pp(f.seating)
