@@ -1,3 +1,6 @@
+from math import log
+
+
 DICT = {
     'zero': '0',
     'one': '1',
@@ -14,6 +17,10 @@ DICT = {
 
 def convert(string):
     """ Convert str to int """
+
+    if not isinstance(string, list):
+        raise TypeError("Argument not be a list")
+
     x = -1
     try:
         number = ''
@@ -25,3 +32,8 @@ def convert(string):
         pass
 
     return x
+
+
+def string_log(string):
+    value = convert(string)
+    return log(value)
