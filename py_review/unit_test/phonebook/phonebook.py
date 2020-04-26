@@ -1,6 +1,11 @@
+import os
+
+
 class PhoneBook():
-    def __init__(self):
+    def __init__(self, cache_directory):
         self.numbers = {}
+        self.filename = os.path.join(cache_directory, "phonebook.txt")
+        self.cache = open(self.filename, "w")
 
     def add(self, name, number):
         self.numbers[name] = number
@@ -16,3 +21,10 @@ class PhoneBook():
                 if number1.startswith(number2):
                     return False
         return True
+
+    def names(self):
+        return set(self.numbers.keys())
+
+    def clear(self):
+        self.cache.close()
+        os.remove(self.filename)
