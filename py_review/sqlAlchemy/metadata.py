@@ -27,6 +27,11 @@ BATTLE_PARTICIPANTS_TABLE = Table('battle_participants', metadata,
     Column('hero_id', Integer, ForeignKey('heroes.hero_id'), nullable=False),
 )
 
+BATTLE_EVENT_TYPE_TABLE = Table('battle_event_types', metadata,
+    Column('battle_event_type_id', Integer, nullable=False, primary_key=True),
+    Column('name', String(20), unique=True, nullable=False),
+)
+
 
 @pytest.mark.parametrize("query",
                           [(select([HEROES_TABLE])),
@@ -82,8 +87,28 @@ def test_join_tables():
         .group_by(HEROES_TABLE.columns.name)\
         .order_by(Column('total_events').desc())
 
-    results = CONECCTION.execute(query)
+    assert show_comands_on_db(query) == True
 
+
+def list_who_kill_more():
+    join = BATTLE_PARTICIPANTS_TABLE\
+        .join(HEROES_TABLE, \
+            BATTLE_PARTICIPANTS_TABLE.columns.hero_id == HEROES_TABLE.columns.hero_id)\
+        .join(BATTLE_EVENTS_TABLE, \
+            BATTLE_PARTICIPANTS_TABLE.columns.battle_participant_id == BATTLE_EVENTS_TABLE.columns.battle_participant_id)\
+        .join(BATTLE_EVENT_TYPE_TABLE, \
+            BATTLE_EVENTS_TABLE.columns.battle_event_type_id == BATTLE_EVENT_TYPE_TABLE.columns.battle_event_type_id)
+
+    query = select([
+        HEROES_TABLE.columns.name,
+        func.count(BATTLE_EVENTS_TABLE.columns.battle_event_id).label('total_kills')
+    ])\
+        .select_from(join)\
+        .where(BATTLE_EVENT_TYPE_TABLE.columns.name == 'HERO_KILL')\
+        .group_by(HEROES_TABLE.columns.name)\
+        .order_by(Column('total_kills').desc())
+
+    results = CONECCTION.execute(query)
     for result in results.fetchall():
         print(result)
 
@@ -95,11 +120,7 @@ def show_comands_on_db(query, battle_event=None, join_table=None):
     if battle_event:
         return results.scalar()
 
-
     if results.fetchall():
         _assert = True
 
     return _assert
-
-
-test_join_tables()
