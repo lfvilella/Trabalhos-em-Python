@@ -127,6 +127,5 @@ dmypy.json
 **/**/.vscode
 
 local_folder
-
-
 lorem.txt
+py_review/sqlAlchemy/heroes.db
