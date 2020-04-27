@@ -10,7 +10,7 @@ heroes_table = Table('heroes', metadata,
     Column('hero_id', Integer, nullable=False, primary_key=True),
     Column('name', String(20), nullable=False, unique=True),
 )
-query = select([heroes_table]) # it's like that: SELECT * from heroes
+query = select([heroes_table.columns.name]) # it's like that: SELECT * from heroes
 results = connection.execute(query)
 for result in results.fetchall():
     print(result)
