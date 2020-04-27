@@ -14,9 +14,17 @@ HEROES_TABLE = Table('heroes', metadata,
 
 BATTLE_EVENTS_TABLE = Table('battle_events', metadata,
     Column('battle_event_id', Integer, nullable=False, primary_key=True),
-    Column('battle_participant_id', Integer, nullable=False),
+    Column('battle_participant_id', Integer, ForeignKey('battle_participants.battle_participant_id'), nullable=False),
+    Column('battle_event_type_id', Integer, ForeignKey('battle_events.battle_event_id'), nullable=False),
     Column('rubies_gained', Integer, nullable=False),
     Column('timestamp', Integer, nullable=False),
+)
+
+BATTLE_PARTICIPANTS_TABLE = Table('battle_participants', metadata,
+    Column('battle_participant_id', Integer, nullable=False, primary_key=True),
+    Column('user_id', Integer, ForeignKey('users.user_id'), nullable=False),
+    Column('battle_id', Integer, ForeignKey('battles.battle_id'), nullable=False),
+    Column('hero_id', Integer, ForeignKey('heroes.hero_id'), nullable=False),
 )
 
 
@@ -59,7 +67,28 @@ def test_most_battle_events():
     assert show_comands_on_db(query) == True
 
 
-def show_comands_on_db(query, battle_event=None):
+def test_join_tables():
+    join = BATTLE_PARTICIPANTS_TABLE\
+        .join(BATTLE_EVENTS_TABLE, \
+            BATTLE_PARTICIPANTS_TABLE.columns.battle_participant_id == BATTLE_EVENTS_TABLE.columns.battle_participant_id)\
+        .join(HEROES_TABLE, \
+            BATTLE_PARTICIPANTS_TABLE.columns.hero_id == HEROES_TABLE.columns.hero_id)
+
+    query = select([
+        HEROES_TABLE.columns.name,\
+        func.count(BATTLE_EVENTS_TABLE.columns.battle_event_id).label('total_events')
+    ])\
+        .select_from(join)\
+        .group_by(HEROES_TABLE.columns.name)\
+        .order_by(Column('total_events').desc())
+
+    results = CONECCTION.execute(query)
+
+    for result in results.fetchall():
+        print(result)
+
+
+def show_comands_on_db(query, battle_event=None, join_table=None):
     _assert = False
     results = CONECCTION.execute(query)
 
@@ -71,3 +100,6 @@ def show_comands_on_db(query, battle_event=None):
         _assert = True
 
     return _assert
+
+
+test_join_tables()
