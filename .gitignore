@@ -129,3 +129,4 @@ dmypy.json
 local_folder
 lorem.txt
 py_review/sqlAlchemy/heroes.db
+py_review/scraping/scrapingVenv
