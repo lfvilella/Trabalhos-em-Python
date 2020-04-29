@@ -135,4 +135,4 @@ scrapy/SimpleSpider/actual_company_details.txt
 # make it to below: scrapy crawl company_details_item -o company_details.csv -t csv
 scrapy/ItemSpider/company_details.csv
 
-matplotlib/matplotVenv
+data_visualization/matplotVenv
