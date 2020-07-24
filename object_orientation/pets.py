@@ -1,3 +1,6 @@
+import uuid
+
+
 class Pets:
 
     id = 0
@@ -12,12 +15,12 @@ class Pets:
         return f'{name} - {identifier}'
 
     @classmethod
-    def create_without_details(cls, name):
-        return cls(name, details={})
+    def create_without_details(cls, name, **kwargs):
+        return cls(name, details={}, **kwargs)
 
     @classmethod
-    def create(cls, name, details):
-        return cls(name, details)
+    def create(cls, name, details, **kwargs):
+        return cls(name, details, **kwargs)
 
     def __init__(self, name, details):
         self.name = name
@@ -30,9 +33,29 @@ class Pets:
 
 class PetOwner(Pets):
 
+    def __init__(self, name, identifier, *, owner, **kwargs):
+        super().__init__(name, identifier)
+        self.owner = owner
+
+    @property
+    def owner(self):
+        return self._owner
+
+    @owner.setter
+    def owner(self, owner):
+        self._owner = PetOwner.check_owner(owner)
+
     @staticmethod
-    def _create_id(name, identifier):
-        return f'owner - {name} - {identifier}'
+    def check_owner(owner):
+        if not owner:
+            raise ValueError('Hey! Needs a Owner')
+        if type(owner) != str:
+            raise ValueError('Hey! Owner Needs be a str')
+        return owner
+
+    @staticmethod
+    def _create_id(*args, **kwargs):
+        return str(uuid.uuid4())
 
 
 if __name__ == "__main__":
@@ -40,9 +63,9 @@ if __name__ == "__main__":
     dog2 = Pets.create("filo", {"color": "brown", "fur": "short"})
     dog3 = Pets.create_without_details('max')
 
-    print(dog1.name, dog2.name, dog3.name)
-    print(dog1.details, dog2.details, dog3.details)
-    print(dog1.identifier, dog2.identifier, dog3.identifier)
+    print(dog1.name, dog1.details, dog1.identifier)
+    print(dog2.name, dog2.details, dog2.identifier)
+    print(dog3.name, dog3.details, dog3.identifier)
 
-    person = PetOwner('nega', 1)
-    print(person.identifier)
+    po = PetOwner.create_without_details('dog', owner='me', identifier=1)
+    print(po.identifier, po.owner)
