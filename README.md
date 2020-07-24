@@ -1,3 +1,5 @@
-# Trabalhos-em-Python-Thehuxley
+[![license](https://img.shields.io/github/license/lfvilella/Trabalhos-em-Python.svg)](https://github.com/lfvilella/Trabalhos-em-Python/blob/master/LICENSE)
 
-In this repository I'm just training some subjects about python language.
+# Python-Simple-Works
+
+In this repository I'm just training/studing some topics about python language.
