@@ -33,7 +33,8 @@ class SortedList(SimpleList):
 class IntList(SimpleList):
 
     def __init__(self, items=()):
-        for x in items: self._validate(x)
+        for x in items:
+            self._validate(x)
         super().__init__()
 
     def _validate(self, x):
