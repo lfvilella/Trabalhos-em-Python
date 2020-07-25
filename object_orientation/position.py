@@ -73,6 +73,6 @@ if __name__ == "__main__":
     earth = EarthPosition(3, 4)
     mars = MarsPosition(5, 6)
 
-    print(repr(position), str(position), format(position, ".3") )
+    print(repr(position), str(position), format(position, ".3"))
     print(repr(earth), str(earth), format(earth, ".5"))
     print(repr(mars), str(mars), format(mars))
