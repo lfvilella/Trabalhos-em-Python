@@ -1,6 +1,6 @@
-"""Simple Mealy Machine
+"""Simple Moore Machine
 
-This is a simple Mealy Machine where it read only 'a' and 'b' charfield
+This is a simple Moore Machine where it read only 'a' and 'b' charfield
 and returns a cached output and the state what stopped.
 """
 
@@ -8,8 +8,8 @@ import collections
 import typing
 
 
-class SimpleMealyMachine:
-    """Simple Mealy Machine
+class SimpleMooreMachine:
+    """Simple Moore Machine
 
     This class handle the machine stuff.
     """
@@ -19,6 +19,7 @@ class SimpleMealyMachine:
         self._state = 0  # @property
         self._counter = collections.Counter()
         self._cache = []
+        self._outpout_data = []
 
     @staticmethod
     def _validate_data(value: str):
@@ -53,10 +54,42 @@ class SimpleMealyMachine:
             if char == 'b':
                 self._state = 2
 
+            # Reaches a state and call output logic
+            self._make_output(char)
+
             self._cache.append((
                 f"State: {self._state}",
                 f"Times it was called: {self._counter[char]}"
             ))
+
+    def _make_output(self, letter: str):
+        """Make Output
+
+        Note:
+            Just make the output logic.
+
+        Args:
+            letter: Receive 'a' or 'b'.
+        """
+
+        a = 'YOU CHOSE AAAAA'
+        b = 'YOU CHOSE BBBBB'
+
+        if letter == 'a':
+            self._outpout_data.append(a)
+        else:
+            self._outpout_data.append(b)
+
+    def show_output_data(self):
+        """Show Output Data
+
+        Note:
+            Preferably, use it after execute machine.
+
+        Returns:
+            Returns self._outpout_data.
+        """
+        return f"Output Data: {self._outpout_data}"
 
     def final_state(self):
         """Final State
@@ -106,13 +139,15 @@ def _run_code(string: str):
 
     Just a example running the code.
     """
-    mealy = SimpleMealyMachine(string)
-    mealy.execute_machine()  # Run Machine
+    moore = SimpleMooreMachine(string)
+    moore.execute_machine()  # Run Machine
 
-    print_in_line(mealy.pretty_print_states())  # Print States
-    print_in_line(mealy.show_cached_data())  # Print Cache
+    print_in_line(moore.pretty_print_states())  # Print States
+    print_in_line(moore.show_cached_data())  # Print Cache
 
-    print(f"Final State: {mealy.final_state()}")  # Print Final State
+    print(f"Final State: {moore.final_state()}")  # Print Final State
+
+    print(moore.show_output_data())
 
 
 if __name__ == '__main__':
