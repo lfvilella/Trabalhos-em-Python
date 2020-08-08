@@ -136,3 +136,6 @@ scrapy/SimpleSpider/actual_company_details.txt
 scrapy/ItemSpider/company_details.csv
 
 data_visualization/matplotVenv
+
+# Venv
+chatbot/chatbot
