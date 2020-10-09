@@ -139,3 +139,7 @@ data_visualization/matplotVenv
 
 # Venv
 chatbot/chatbot
+
+# Data
+pandas/collection-master
+pandas/**.pickle
