@@ -39,3 +39,8 @@ sheet.conditional_format(
     },
 )
 writer.save()
+
+
+# JSON
+small_df.to_json('default.json')
+small_df.to_json('default.json', orient='table')
